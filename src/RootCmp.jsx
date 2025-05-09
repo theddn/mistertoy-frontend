@@ -6,6 +6,7 @@ import { UserMsg } from './cmps/UserMsg'
 import { AppFooter } from './cmps/AppFooter'
 import { AppHeader } from './cmps/AppHeader'
 import { AboutUs } from './pages/AboutUs'
+import { ToyDetails } from './pages/ToyDetails'
 import { ToyIndex } from './pages/ToyIndex'
 import { store } from './store/store'
 import { HomePage } from './pages/HomePage'
@@ -24,6 +25,10 @@ export function App() {
                             <Route element={<HomePage />} path="/" />
                             <Route element={<AboutUs />} path="/about" />
                             <Route element={<ToyIndex />} path="/toy" />
+                            <Route
+                                element={<ToyDetails />}
+                                path="/toy/:toyId"
+                            />
                         </Routes>
                     </main>
                     <AppFooter />
