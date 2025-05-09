@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Loader } from '../cmps/Loader'
 import { ToyList } from '../cmps/ToyList'
-import { showErrorMsg } from '../services/event-bus.service'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 
-import { loadToys } from '../store/actions/toy.actions'
+import { loadToys, removeToy } from '../store/actions/toy.actions'
 import { toyService } from '../services/toy.service'
 
 export function ToyIndex() {
@@ -15,6 +15,7 @@ export function ToyIndex() {
         (storeState) => storeState.toyModule.flag.isLoading,
     )
     const [pageIdx] = useState(0)
+
     useEffect(() => {
         Promise.all([toyService.getToyLabels(), loadToys(pageIdx)]).catch(
             (err) => {
@@ -23,6 +24,15 @@ export function ToyIndex() {
             },
         )
     }, [filterBy, pageIdx])
+
+    function onRemoveToy(toyId) {
+        removeToy(toyId)
+            .then(() => showSuccessMsg('Toy removed'))
+            .catch((err) => {
+                console.log('Cannot remove toy', err)
+                showErrorMsg('Cannot remove toy')
+            })
+    }
 
     return (
         <section className="toy-index">
@@ -33,7 +43,7 @@ export function ToyIndex() {
             </div>
 
             {isLoading && <Loader />}
-            {!isLoading && <ToyList toys={toys} />}
+            {!isLoading && <ToyList toys={toys} onRemoveToy={onRemoveToy} />}
         </section>
     )
 }

@@ -1,6 +1,8 @@
 import { toyService } from '../../services/toy.service'
 
 export const SET_TOYS = 'SET_TOYS'
+export const REMOVE_TOY = 'REMOVE_TOY'
+
 
 
 export const SET_FILTER_BY = 'SET_FILTER_BY'
@@ -27,6 +29,10 @@ export function toyReducer(state = initialState, action = {}) {
         // Toys
         case SET_TOYS:
             return { ...state, toys: action.toys, lastToys: state.toys }
+
+        case REMOVE_TOY:
+            toys = state.toys.filter(toy => toy._id !== action.toyId)
+            return { ...state, toys, lastToys: state.toys }
 
         case TOY_UNDO:
             return { ...state, toys: [...state.lastToys] }

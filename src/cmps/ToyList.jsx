@@ -1,10 +1,13 @@
-// Toy List
+import { Link } from 'react-router-dom'
 import { ToyPreview } from './ToyPreview'
 
-export function ToyList({ toys }) {
+export function ToyList({ onRemoveToy, toys }) {
     const elLis = toys.map((toy) => (
         <li key={toy._id}>
             <ToyPreview toy={toy} />
+            <div>
+                <button onClick={() => onRemoveToy(toy._id)}>Remove</button>
+            </div>
         </li>
     ))
 

@@ -1,9 +1,11 @@
 import { toyService } from '../../services/toy.service'
 import {
+    REMOVE_TOY,
     SET_FILTER_BY,
     SET_IS_LOADING,
     SET_SORT_BY,
     SET_TOYS,
+    TOY_UNDO,
 
 } from '../reducers/toy.reducer'
 import { store } from '../store'
@@ -26,6 +28,25 @@ export function loadToys() {
         })
 }
 
+export function removeToy(toyId) {
+    return toyService.remove(toyId)
+        .then(() => {
+            store.dispatch({ type: REMOVE_TOY, toyId })
+        })
+        .catch(err => {
+            console.log('toy action -> Cannot remove toy', err)
+            throw err
+        })
+}
+
+export function removeToyOptimistic(toyId) {
+    store.dispatch({ type: REMOVE_TOY, toyId })
+    return toyService.remove(toyId).catch(err => {
+        store.dispatch({ type: TOY_UNDO })
+        console.log('toy action -> Cannot remove toy', err)
+        throw err
+    })
+}
 
 export function setFilter(filterBy = toyService.getDefaultFilter()) {
     store.dispatch({ type: SET_FILTER_BY, filterBy: filterBy })
